@@ -10,6 +10,10 @@ class Attack(Entity):
     def animate(self):
         if self.app.anim_trigger:
             self.frame_index += 1
+
+            if self.frame_index >= 5:
+                self.app.collision_group.remove(self)
+
             if self.frame_index >= self.attrs['animations']['idle'][1]:
                 self.kill()
             else:

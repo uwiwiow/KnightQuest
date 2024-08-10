@@ -6,7 +6,7 @@ from bar import Bar
 class Player(Entity):
     def __init__(self, app, name, screen_pos):
         super().__init__(app, name, screen_pos=screen_pos)
-        self.animations = ['idle', 'attack', 'attack2', 'move_backward', 'move_forward', 'death',]
+        self.animations = ['idle', 'attack', 'attack2', 'move_backward', 'move_forward', 'death']
         self.animation = self.animations[0]
         self.can_attack = True
         Bar(self.app, 'red_bar', screen_pos=(20, 20))
@@ -18,11 +18,13 @@ class Player(Entity):
             self.can_attack = False
             self.frame_index = 0
             self.animation = self.animations[1]
+            pg.event.post(pg.event.Event(self.app.att_event))
 
         if key_state[pg.K_l] and self.can_attack:
             self.can_attack = False
             self.frame_index = 0
             self.animation = self.animations[2]
+            pg.event.post(pg.event.Event(self.app.att_event))
 
         if self.can_attack and self.animation != 'death':
             self.animation = self.animations[0]
@@ -50,27 +52,28 @@ class Player(Entity):
         # maybe not do kill, TO DO ? I would need to add a lock to only send once the life event per attack
 
         if hit:
+
             pg.event.post(pg.event.Event(self.app.life_event))
             # TODO could try to pass this as a parameter to bar object
 
     def update(self):
         super().update()
         self.control()
-        self.check_death()
         self.check_collision()
+        self.check_death()
 
     def animate(self):
         if self.app.anim_trigger:
             self.frame_index += 1
-            if self.frame_index >= self.attrs['animations'][self.animation][1]:
+            if self.frame_index >= self.attrs['animations'][self.animation][1]:  # check if animation ended
+                self.frame_index = 0
                 if self.animation == 'attack' or self.animation == 'attack2':
                     self.animation = self.animations[0]
                     self.can_attack = True
-                self.frame_index = 0
                 if self.animation == 'death':
                     self.frame_index = 1
                     pg.time.set_timer(self.app.anim_event, 0)  # not sure if this is the best way
-                    pg.time.set_timer(self.app.att_event, 0)
+                    pg.time.set_timer(self.app.en_att_event, 0)
                     for sprite in self.app.collision_group:
                         sprite.kill()
             self.image = self.images[self.animation][self.frame_index]
