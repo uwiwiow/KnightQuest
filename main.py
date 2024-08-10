@@ -19,9 +19,8 @@ class App:
         self.life_event = pg.USEREVENT + 0
         self.death_trigger = False
         self.death_event = pg.USEREVENT + 1
-        self.att_trigger = False
+        self.att_trigger = 0
         self.att_event = pg.USEREVENT + 2
-        # TODO manage to make attack (from both sides) to have a value, to make more effective attacks
 
         # enemy events
         self.en_spawn_trigger = False
@@ -50,7 +49,7 @@ class App:
         self.anim_trigger = False
 
         self.life_trigger = False
-        self.att_trigger = False
+        self.att_trigger = 0
 
         self.en_att_trigger = False
 
@@ -66,7 +65,7 @@ class App:
             elif e.type == self.death_event:
                 self.death_trigger = True
             elif e.type == self.att_event:
-                self.att_trigger = True
+                self.att_trigger = e.damage
 
             elif e.type == self.en_spawn_event:
                 self.en_spawn_trigger = True

@@ -18,13 +18,13 @@ class Player(Entity):
             self.can_attack = False
             self.frame_index = 0
             self.animation = self.animations[1]
-            pg.event.post(pg.event.Event(self.app.att_event))
+            pg.event.post(pg.event.Event(self.app.att_event, damage=2))
 
         if key_state[pg.K_l] and self.can_attack:
             self.can_attack = False
             self.frame_index = 0
             self.animation = self.animations[2]
-            pg.event.post(pg.event.Event(self.app.att_event))
+            pg.event.post(pg.event.Event(self.app.att_event, damage=1))
 
         if self.can_attack and self.animation != 'death':
             self.animation = self.animations[0]

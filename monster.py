@@ -36,7 +36,7 @@ class Monster(Entity):
             self.animation = self.animations[1]
 
     def check_hit(self):
-        if self.app.att_trigger and not self.death:
+        if self.app.att_trigger > 0 and not self.death:
             self.frame_index = 0
             self.animation = self.animations[2]
 
