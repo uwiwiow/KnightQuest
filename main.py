@@ -21,6 +21,7 @@ class App:
         self.death_event = pg.USEREVENT + 1
         self.att_trigger = False
         self.att_event = pg.USEREVENT + 2
+        # TODO manage to make attack (from both sides) to have a value, to make more effective attacks
 
         # enemy events
         self.en_spawn_trigger = False

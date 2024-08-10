@@ -6,7 +6,7 @@ from bar import Bar
 
 
 class Monster(Entity):
-    def __init__(self, app, name, attack_time, screen_pos, mirror=(False, False)):
+    def __init__(self, app, name, attack_name, attack_time, screen_pos, mirror=(False, False)):
         super().__init__(app, name, screen_pos=screen_pos, mirror=mirror)
         self.curr_position = vec2(0)
         self.positions = [(190, 120), (520, 120), (850, 120),
@@ -16,6 +16,7 @@ class Monster(Entity):
         self.animation = self.animations[0]
         self.death = False
         self.bar = Bar(self.app, 'blue_bar', screen_pos=(WIDTH - 260, 20))
+        self.attack_name = attack_name
 
         pg.time.set_timer(self.app.en_att_event, attack_time)
 
@@ -24,12 +25,12 @@ class Monster(Entity):
             # TODO I should make it so that the attack doesn't always hit the players position
             self.curr_position: pg.rect.RectType = self.app.player.rect
             if randint(1, 3) == 1:
-                WarningSignal(self.app, "warning", (self.curr_position.centerx - 30, self.curr_position.centery + 90))
+                WarningSignal(self.app, "warning", self.attack_name, (self.curr_position.centerx - 30, self.curr_position.centery + 90))
 
             random_positions = sample(self.positions, randint(1, 3))
             for position in random_positions:
                 if position is not self.curr_position:
-                    WarningSignal(self.app, "warning", position)
+                    WarningSignal(self.app, "warning", self.attack_name, position)
 
             self.frame_index = 0
             self.animation = self.animations[1]
